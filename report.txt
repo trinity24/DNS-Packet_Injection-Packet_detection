@@ -1,0 +1,51 @@
+
+
+In your report.txt, for both dnsinject and dnsdetect have a dedicated section on
+ How to compile,
+
+For DNSinject
+
+python dnsinject.py -i [interface] -h [hostname] expression
+
+python dnsinject.py -i en0 
+
+python dnsinject.py 
+
+For DNSdetect
+
+
+python dnsdetect.py -i [interface] -r [tracefile] expression
+
+python dnsdetect.py -i en0 
+
+python dnsdetect.py 
+
+Note: When expression is given, use it with brackets like \( expression \)
+
+ General design 
+
+For DNS injection:
+Take input arguments, and get interface if given, otherwise, sniff on all devices.
+Now, for each packet, check if it is a DNS packet and furthur check if its a request 
+packet, now, contruct a packet - response for the request query with ip for the requested 
+domain as your local_ip which is got from the get_local_ip function
+Now we send this packet by changing src, dst ip and port values.
+
+
+For DNS detection:
+I am trying to capture DNS packets as above, but looking for the response packets. The first response for the 
+DNS packet with given transaction id is saved to dictionary. If you get multiple response for the same query
+we check if there is some match in the response. If there isnt a match, i suspect DNS spoofing. So, i try to
+report that using the response information and the request domain name.
+
+
+
+How do you take care of false positives( in case of dnsdetect)
+
+
+
+The OS version you have tested your code on, Language and the version used.
+Ubuntu 16.04
+
+Detection output for the attached pcap trace file. 
+
